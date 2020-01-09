@@ -13,6 +13,6 @@ go install EricNeid/go-getdockerimage/cmd/getdockerimage
 Make sure that $GOPATH/bin is in your path.
 
 ```bash
-getdockerimage.exe kartoza/postgis:12.0
-=> kartoza_postgis_12.0.img
+getdockerimage.exe foo/image:2.0.0
+=> foo_image_2.0.0.img
 ```
