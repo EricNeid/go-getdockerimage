@@ -11,8 +11,8 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Println("Usage:")
-		fmt.Println("getdockerimage <image>")
+		fmt.Printf("Usage  : %s <image-name>\n", os.Args[0])
+		fmt.Printf("Example: %s foo/image:2.0.0\n", os.Args[0])
 		os.Exit(1)
 	}
 
