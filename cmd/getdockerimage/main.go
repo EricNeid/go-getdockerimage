@@ -33,6 +33,7 @@ func main() {
 }
 
 func downloadImage(image string) error {
+	fmt.Printf("docker pull %s\n", image)
 	cmd := exec.Command("docker", "pull", image)
 
 	var outBuff, errBuff bytes.Buffer
@@ -50,6 +51,7 @@ func downloadImage(image string) error {
 }
 
 func saveImage(image string, output string) error {
+	fmt.Printf("docker save %s --output %s\n", image, output)
 	cmd := exec.Command("docker", "save", image, "--output", output)
 
 	var outBuff, errBuff bytes.Buffer
