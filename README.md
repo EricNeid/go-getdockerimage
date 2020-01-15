@@ -11,6 +11,15 @@ Exporting images is useful, if you have a server without access to docker hub.
 
 ## Getting started
 
+Make sure that docker is installed and checkout the project.
+
+```bash
+make test
+make build
+```
+
+## Usage
+
 Download tool.
 
 ```bash
