@@ -8,23 +8,23 @@ func TestGetOutputName(t *testing.T) {
 	result, err := getOutputName("foo")
 	// verify
 	verify.Ok(t, err)
-	verify.Equals(t, "foo.img", result)
+	verify.Equals(t, "foo.docker.img", result)
 
 	// action
 	result, err = getOutputName("foo:2.0.0")
 	// verify
 	verify.Ok(t, err)
-	verify.Equals(t, "foo_2.0.0.img", result)
+	verify.Equals(t, "foo_2.0.0.docker.img", result)
 
 	// action
 	result, err = getOutputName("foo/bar")
 	// verify
 	verify.Ok(t, err)
-	verify.Equals(t, "foo_bar.img", result)
+	verify.Equals(t, "foo_bar.docker.img", result)
 
 	// action
 	result, err = getOutputName("foo/bar:2.0.0")
 	// verify
 	verify.Ok(t, err)
-	verify.Equals(t, "foo_bar_2.0.0.img", result)
+	verify.Equals(t, "foo_bar_2.0.0.docker.img", result)
 }

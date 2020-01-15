@@ -108,7 +108,7 @@ func getOutputName(image string) (string, error) {
 		output = output + "_" + version
 	}
 
-	output = output + ".img"
+	output = output + ".docker.img"
 
 	return output, nil
 }
