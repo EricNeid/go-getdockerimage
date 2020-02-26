@@ -1,3 +1,3 @@
-module EricNeid/go-getdockerimage
+module github.com/EricNeid/go-getdockerimage
 
 go 1.13

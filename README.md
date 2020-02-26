@@ -25,7 +25,7 @@ Make sure that $GOPATH/bin is in your path.
 Download tool:
 
 ```bash
-go install EricNeid/go-getdockerimage/cmd/getdockerimage
+go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage
 ```
 
 Run it:

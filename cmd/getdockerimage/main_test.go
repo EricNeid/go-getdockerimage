@@ -1,7 +1,10 @@
 package main
 
-import "testing"
-import "EricNeid/go-getdockerimage/internal/verify"
+import (
+	"testing"
+
+	"github.com/EricNeid/go-getdockerimage/internal/verify"
+)
 
 func TestGetOutputName(t *testing.T) {
 	// action
