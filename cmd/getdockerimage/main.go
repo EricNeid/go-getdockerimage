@@ -69,9 +69,9 @@ func saveImage(image string, output string) error {
 }
 
 // getOutputName returns name of generated file from image name
-// foo -> foo.img
-// foo/bar -> foo_bar.img
-// foo/bar:42 -> foo_bar_42.img
+// foo -> foo.docker.img
+// foo/bar -> foo_bar.docker.img
+// foo/bar:42 -> foo_bar_42.docker.img
 func getOutputName(image string) (string, error) {
 	var group string
 	var img string
