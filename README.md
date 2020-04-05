@@ -11,18 +11,22 @@ Exporting images is useful, if you have a server without access to docker hub.
 * Copy image to your server
 * Load image with docker load --input MyImage
 
-## Getting started
+# Requirements
 
-Make sure that docker is installed and checkout the project.
+Docker is installed on your machine.
+
+## Quickstart
+
+Checkout the project our simply click on the Gitpod link above.
 
 ```bash
-make test
-make build
+make all
 ```
 
 ## Usage
 
-Make sure that $GOPATH/bin is in your path.
+If go is installed and $GOPATH/bin is in your path, you can download and install the tool directly
+by using go tools.
 
 Download tool:
 
