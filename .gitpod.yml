@@ -1,3 +1,2 @@
 tasks:
   - init: make all
-    command: go run cmd/getdockerimage/main.go
