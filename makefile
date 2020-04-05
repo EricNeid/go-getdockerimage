@@ -1,4 +1,4 @@
-all: test build 
+all: test build build-windows
 
 build:
 	cd cmd/getdockerimage && go build
