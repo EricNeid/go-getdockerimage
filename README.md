@@ -1,4 +1,9 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/EricNeid/go-getdockerimage) 
+<!-- markdownlint-disable MD041-->
+[![Go Report Card](https://goreportcard.com/badge/github.com/EricNeid/go-getdockerimage?style=flat-square)](https://goreportcard.com/report/github.com/EricNeid/go-getdockerimage)
+![Go](https://github.com/EricNeid/go-sleep/workflows/Go/badge.svg)
+[![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/EricNeid/go-getdockerimage)
+[![Release](https://img.shields.io/github/release/EricNeid/go-getdockerimage.svg?style=flat-square)](https://github.com/EricNeid/go-sleep/releases/latest)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/EricNeid/go-getdockerimage)
 
 # About
 

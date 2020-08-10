@@ -1,10 +1,13 @@
-all: test build build-windows
+all: test build
 
-build:
-	cd cmd/getdockerimage && go build
+build-linux-amd64:
+	GOOS=linux GOARCH=amd64 go build ./cmd/getdockerimage/
 
-build-windows:
-	cd cmd/getdockerimage && GOOS=windows GOARCH=amd64 go build
+build-linux-arm:
+	GOOS=linux GOARCH=arm go build ./cmd/getdockerimage/
+
+build-windows-amd64:
+	GOOS=windows GOARCH=amd64 go build ./cmd/getdockerimage/
 
 test:
 	go test ./...
