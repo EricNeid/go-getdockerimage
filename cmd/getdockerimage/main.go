@@ -40,14 +40,10 @@ func downloadImage(image string) error {
 	cmd.Stdout = &outBuff
 	cmd.Stderr = &errBuff
 
-	err := cmd.Run()
-	if err != nil {
-		println(errBuff.String())
-	} else {
-		println(outBuff.String())
-	}
+	go printBuffer(&outBuff)
+	go printBuffer(&errBuff)
 
-	return err
+	return cmd.Run()
 }
 
 func saveImage(image string, output string) error {
@@ -58,14 +54,10 @@ func saveImage(image string, output string) error {
 	cmd.Stdout = &outBuff
 	cmd.Stderr = &errBuff
 
-	err := cmd.Run()
-	if err != nil {
-		println(errBuff.String())
-	} else {
-		println(outBuff.String())
-	}
+	go printBuffer(&outBuff)
+	go printBuffer(&errBuff)
 
-	return err
+	return cmd.Run()
 }
 
 // getOutputName returns name of generated file from image name
@@ -111,4 +103,13 @@ func getOutputName(image string) (string, error) {
 	output = output + ".docker.img"
 
 	return output, nil
+}
+
+func printBuffer(buffer *bytes.Buffer) {
+	for {
+		if buffer.Len() > 0 {
+			next := buffer.Next(buffer.Len())
+			fmt.Printf(string(next))
+		}
+	}
 }
