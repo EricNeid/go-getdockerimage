@@ -1,4 +1,3 @@
-cmd/getdockerimage/getdockerimage.exe
-cmd/getdockerimage/getdockerimage
-getdockerimage.exe
-getdockerimage
+**/getdockerimage.exe
+**/getdockerimage
+**/*.docker.img
