@@ -1,5 +1,8 @@
 all: test build
 
+build:
+	go build ./cmd/getdockerimage/
+
 build-linux-amd64:
 	GOOS=linux GOARCH=amd64 go build ./cmd/getdockerimage/
 

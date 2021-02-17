@@ -12,7 +12,7 @@ import (
 func Assert(t *testing.T, condition bool, msg string, v ...interface{}) {
 	if !condition {
 		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d: "+msg+"\033[39m\n\n", append([]interface{}{filepath.Base(file), line}, v...)...)
+		fmt.Printf("%s:%d: "+msg+"\n\n", append([]interface{}{filepath.Base(file), line}, v...)...)
 		t.FailNow()
 	}
 }
@@ -21,7 +21,7 @@ func Assert(t *testing.T, condition bool, msg string, v ...interface{}) {
 func Ok(t *testing.T, err error) {
 	if err != nil {
 		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d: unexpected error: %s\033[39m\n\n", filepath.Base(file), line, err.Error())
+		fmt.Printf("%s:%d: unexpected error: %s\n\n", filepath.Base(file), line, err.Error())
 		t.FailNow()
 	}
 }
@@ -30,7 +30,16 @@ func Ok(t *testing.T, err error) {
 func Equals(t *testing.T, exp, act interface{}) {
 	if !reflect.DeepEqual(exp, act) {
 		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d:\n\n\texp: %#v\n\n\tgot: %#v\033[39m\n\n", filepath.Base(file), line, exp, act)
+		fmt.Printf("%s:%d:\n\n\texp: %#v\n\n\tgot: %#v\n\n", filepath.Base(file), line, exp, act)
+		t.FailNow()
+	}
+}
+
+// NotNil fails if act is nil
+func NotNil(t *testing.T, act interface{}, msg string) {
+	if act == nil {
+		_, file, line, _ := runtime.Caller(1)
+		fmt.Printf("%s:%d: "+msg+"\n\n", append([]interface{}{filepath.Base(file), line}))
 		t.FailNow()
 	}
 }
