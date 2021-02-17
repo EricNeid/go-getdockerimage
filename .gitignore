@@ -1,3 +1,4 @@
-**/getdockerimage.exe
-**/getdockerimage
+getdockerimage.exe
+getdockerimage
+!getdockerimage/
 **/*.docker.img
