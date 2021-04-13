@@ -22,13 +22,14 @@ Docker is installed on your machine.
 
 ## Quickstart
 
-Checkout the project our simply click on the Gitpod link above.
+Checkout the project and run make (given that go build chain is installed. 
+Hint: You can simply click on the Gitpod link above and compile it online without setting up a tool chain.
 
 ```bash
 make all
 ```
 
-## Usage
+## Installation
 
 If go is installed and $GOPATH/bin is in your path, you can download and install the tool directly
 by using go tools.
