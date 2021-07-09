@@ -38,7 +38,6 @@ Download tool:
 
 ```bash
 go get github.com/EricNeid/go-getdockerimage/cmd/getdockerimage
-go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage
 ```
 
 Run it:
