@@ -5,16 +5,30 @@ package main
 import (
 	"bytes"
 	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
 	"strings"
 )
 
+const version = "0.2.0"
+
+func init() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+		fmt.Printf("Version: %s\n", version)
+		flag.PrintDefaults()
+
+		fmt.Printf("  Usage  : %s <image-name>\n", os.Args[0])
+		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
+	}
+	flag.Parse()
+}
+
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Printf("Usage  : %s <image-name>\n", os.Args[0])
-		fmt.Printf("Example: %s foo/image:2.0.0\n", os.Args[0])
+		flag.Usage()
 		os.Exit(1)
 	}
 
