@@ -42,7 +42,7 @@ by using go tools.
 Download tool:
 
 ```bash
-go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@latest
+go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@v0.3.1
 ```
 
 Run it:
