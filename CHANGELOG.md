@@ -8,6 +8,9 @@ SPDX-License-Identifier: CC-BY-4.0
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+## 0.3.0 - 2021-09-29
+### Added
+* Display app version
 
 ## 0.2.0 - 2021-09-29
 ### Added

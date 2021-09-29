@@ -125,7 +125,7 @@ func printBuffer(buffer *bytes.Buffer) {
 	for {
 		if buffer.Len() > 0 {
 			next := buffer.Next(buffer.Len())
-			fmt.Printf(string(next))
+			fmt.Print(string(next))
 		}
 	}
 }
