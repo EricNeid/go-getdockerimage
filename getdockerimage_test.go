@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Eric Neidhardt
 // SPDX-License-Identifier: MIT
-package main
+package gogetdockerimage
 
 import (
 	"testing"
@@ -10,25 +10,25 @@ import (
 
 func TestGetOutputName(t *testing.T) {
 	// action
-	result, err := getOutputName("foo")
+	result, err := GetOutputName("foo")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, "foo.docker.img", result)
 
 	// action
-	result, err = getOutputName("foo:2.0.0")
+	result, err = GetOutputName("foo:2.0.0")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, "foo_2.0.0.docker.img", result)
 
 	// action
-	result, err = getOutputName("foo/bar")
+	result, err = GetOutputName("foo/bar")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, "foo_bar.docker.img", result)
 
 	// action
-	result, err = getOutputName("foo/bar:2.0.0")
+	result, err = GetOutputName("foo/bar:2.0.0")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, "foo_bar_2.0.0.docker.img", result)
