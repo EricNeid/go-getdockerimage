@@ -74,7 +74,6 @@ func handleImage(image string) {
 
 func handleDockerFile(dockerFile string) {
 	fmt.Printf("Handling dockerfile %s\n", dockerFile)
-
 	images, err := getdockerimage.GetImagesFromDockefile(dockerFile)
 	if err != nil {
 		fmt.Printf("Error while handling dockerfile %s %s\n", dockerFile, err.Error())
@@ -87,8 +86,7 @@ func handleDockerFile(dockerFile string) {
 
 func handleDockerComposeFile(dockerComposeFile string) {
 	fmt.Printf("Handling compose file %s\n", dockerComposeFile)
-
-	images, err := getdockerimage.GetImagesFromDockefile(dockerComposeFile)
+	images, err := getdockerimage.GetImagesFromDockeCompose(dockerComposeFile)
 	if err != nil {
 		fmt.Printf("Error while handling docker-compose file %s %s\n", dockerComposeFile, err.Error())
 		os.Exit(1)
