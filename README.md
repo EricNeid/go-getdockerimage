@@ -45,11 +45,28 @@ Download tool:
 go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@v0.3.1
 ```
 
-Run it:
+## Usage
+
+Download image:
 
 ```bash
 getdockerimage.exe foo/image:2.0.0
 => foo_image_2.0.0.img
+```
+
+Download image(s) from dockerfile or docker-compose.yml
+
+```bash
+getdockerimage.exe ./my-docker-project/Dockerfile
+=> foo_image_2.0.0.img
+```
+
+Download all required images for project, by checking dockerfile and docker-compose.yml:
+
+```bash
+getdockerimage.exe ./my-docker-project
+=> foo_image_2.0.0.img
+=> bar_image_2.0.0.img
 ```
 
 ## Question or comments

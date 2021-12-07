@@ -8,6 +8,9 @@ SPDX-License-Identifier: CC-BY-4.0
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### Added
+* Bulk download of images, discovered from dockerfile or docker-compose.yml
+
 ## 0.3.1 - 2021-09-29
 ### Fixed
 * Wrong version displayed
