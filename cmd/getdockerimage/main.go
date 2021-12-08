@@ -13,7 +13,7 @@ import (
 	getdockerimage "github.com/EricNeid/go-getdockerimage"
 )
 
-const version = "0.3.1"
+const version = "0.4.0"
 const dockerfile = "DOCKERFILE"
 const composeFile = "DOCKER-COMPOSE.YML"
 
@@ -23,7 +23,7 @@ func init() {
 		fmt.Printf("Version: %s\n", version)
 		flag.PrintDefaults()
 
-		fmt.Printf("  Usage  : %s <image-name>\n", os.Args[0])
+		fmt.Printf("  Usage  : %s <image-name|dockerfile|docker-compose.yml|docker-project-folder>\n", os.Args[0])
 		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
 	}
 	flag.Parse()
