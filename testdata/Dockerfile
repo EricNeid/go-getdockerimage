@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2021 Eric Neidhardt
+# SPDX-License-Identifier: CC0-1.0
 # test dockerfile with 2-stage build process
 
 FROM golang:1.13.0-alpine3.10 as builder
