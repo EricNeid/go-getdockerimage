@@ -102,6 +102,10 @@ func handleDockerComposeFile(dockerComposeFile string) {
 
 func handleDir(dir string) {
 	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			fmt.Printf("Error while walking directory %s %s\n", path, err.Error())
+			return nil
+		}
 		if !d.IsDir() {
 			if strings.ToUpper(d.Name()) == dockerfile {
 				handleDockerFile(path)
