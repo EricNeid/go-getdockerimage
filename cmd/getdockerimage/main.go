@@ -48,7 +48,7 @@ func main() {
 	} else if strings.ToUpper(filepath.Base(input)) == composeFile {
 		handleDockerComposeFile(input)
 	} else {
-		fmt.Println("Argument not understood, expecing image|dockerfile|docker-compose.yml|directory")
+		fmt.Println("Argument not understood, expecting image|dockerfile|docker-compose.yml|directory")
 		fmt.Printf("Arguments was %s\n", input)
 		os.Exit(1)
 	}
@@ -69,7 +69,11 @@ func handleImage(image string) {
 		os.Exit(1)
 	}
 
-	getdockerimage.SaveImage(image, output)
+	err = getdockerimage.SaveImage(image, output)
+	if err != nil {
+		fmt.Println("Error while saving docker image " + err.Error())
+		os.Exit(1)
+	}
 }
 
 func handleDockerFile(dockerFile string) {
