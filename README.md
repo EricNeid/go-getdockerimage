@@ -41,7 +41,7 @@ make all
 Simply grep the latest available binary from the release page and put it somewhere in your path.
 
 If go is installed and $GOPATH/bin is in your path, you can download and install the tool directly
-by using go install. 
+by using go install.
 
 Download tool:
 
