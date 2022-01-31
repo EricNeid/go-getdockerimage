@@ -4,3 +4,4 @@ getdockerimage.exe
 getdockerimage
 !getdockerimage/
 **/*.docker.img
+tmp/
