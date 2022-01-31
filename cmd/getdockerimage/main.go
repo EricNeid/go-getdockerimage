@@ -3,6 +3,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io/fs"
@@ -39,7 +40,7 @@ func main() {
 	f, err := os.Stat(input)
 
 	// image name given
-	if err == os.ErrNotExist {
+	if errors.Is(err, os.ErrNotExist) {
 		handleImage(input)
 	} else if f.IsDir() {
 		handleDir(input)
@@ -90,7 +91,7 @@ func handleDockerFile(dockerFile string) {
 
 func handleDockerComposeFile(dockerComposeFile string) {
 	fmt.Printf("Handling compose file %s\n", dockerComposeFile)
-	images, err := getdockerimage.GetImagesFromDockeCompose(dockerComposeFile)
+	images, err := getdockerimage.GetImagesFromDockerCompose(dockerComposeFile)
 	if err != nil {
 		fmt.Printf("Error while handling docker-compose file %s %s\n", dockerComposeFile, err.Error())
 		os.Exit(1)

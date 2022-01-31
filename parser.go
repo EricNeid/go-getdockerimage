@@ -53,7 +53,7 @@ func GetImagesFromDockefile(dockerfilePath string) ([]string, error) {
 // GetImagesFromDockeCompose returns all images found in given docker-compose file.
 // It search for occurences of "image: <imageName>" or "image: "<imageName>""
 // Search is performed case insensitive.
-func GetImagesFromDockeCompose(dockerfilePath string) ([]string, error) {
+func GetImagesFromDockerCompose(dockerfilePath string) ([]string, error) {
 	lines, err := readFileLines(dockerfilePath)
 	if err != nil {
 		return nil, err

@@ -24,9 +24,9 @@ func TestGetImagesFromDockefile_shouldFindBuilder_shouldIgnoreScrath(t *testing.
 	verify.Equals(t, "golang:1.13.0-alpine3.10", result[0])
 }
 
-func TestGetImagesFromDockeCompose_shouldFindImages(t *testing.T) {
+func TestGetImagesFromDockerCompose_shouldFindImages(t *testing.T) {
 	// action
-	result, err := GetImagesFromDockeCompose("./testdata/docker-compose.yml")
+	result, err := GetImagesFromDockerCompose("./testdata/docker-compose.yml")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, 2, len(result))
