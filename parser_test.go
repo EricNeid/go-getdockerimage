@@ -24,6 +24,15 @@ func TestGetImagesFromDockerfile_shouldFindBuilder_shouldIgnoreScratch(t *testin
 	verify.Equals(t, "golang:1.13.0-alpine3.10", result[0])
 }
 
+func TestGetImagesFromDockerfile2_shouldIgnoreComments(t *testing.T) {
+	// action
+	result, err := GetImagesFromDockerfile("./testdata/Dockerfile_2")
+	// verify
+	verify.Ok(t, err)
+	verify.Equals(t, 1, len(result))
+	verify.Equals(t, "golang:1.13.0-alpine3.10", result[0])
+}
+
 func TestGetImagesFromDockerCompose_shouldFindImages(t *testing.T) {
 	// action
 	result, err := GetImagesFromDockerCompose("./testdata/docker-compose.yml")

@@ -18,3 +18,9 @@ services:
     image: "nginx"
     ports: 
       - "5000:5000"
+
+  proxy:
+    build: .
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432

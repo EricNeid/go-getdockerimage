@@ -23,6 +23,11 @@ func GetImagesFromDockerfile(dockerfilePath string) ([]string, error) {
 
 	for _, l := range lines {
 		// search for possible image
+		// line is comment
+		if strings.HasPrefix(l, "#") {
+			continue
+		}
+
 		// expected format is FROM imageName AS alias
 		index := strings.Index(strings.ToUpper(l), "FROM ")
 		// line does not contain imageName
