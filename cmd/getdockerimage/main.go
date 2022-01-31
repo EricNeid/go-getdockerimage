@@ -14,7 +14,7 @@ import (
 	getdockerimage "github.com/EricNeid/go-getdockerimage"
 )
 
-const version = "0.4.0"
+const version = "0.4.1"
 const dockerfile = "DOCKERFILE"
 const composeFile = "DOCKER-COMPOSE.YML"
 
