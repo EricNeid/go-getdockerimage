@@ -46,7 +46,7 @@ by using go install.
 Download tool:
 
 ```bash
-go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@v0.4.0
+go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@v0.4.1
 ```
 
 ## Usage
