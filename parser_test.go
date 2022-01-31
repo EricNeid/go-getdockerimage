@@ -8,16 +8,16 @@ import (
 	"github.com/EricNeid/go-getdockerimage/internal/verify"
 )
 
-func TestGetImagesFromDockefile_fileNotFound(t *testing.T) {
+func TestGetImagesFromDockerfile_fileNotFound(t *testing.T) {
 	// action
-	_, err := GetImagesFromDockefile("./testdata/no_file")
+	_, err := GetImagesFromDockerfile("./testdata/no_file")
 	// verify
 	verify.NotNil(t, err, "Should return error not found")
 }
 
-func TestGetImagesFromDockefile_shouldFindBuilder_shouldIgnoreScrath(t *testing.T) {
+func TestGetImagesFromDockerfile_shouldFindBuilder_shouldIgnoreScratch(t *testing.T) {
 	// action
-	result, err := GetImagesFromDockefile("./testdata/Dockerfile")
+	result, err := GetImagesFromDockerfile("./testdata/Dockerfile")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, 1, len(result))

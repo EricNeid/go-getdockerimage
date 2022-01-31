@@ -9,11 +9,11 @@ import (
 	"unicode"
 )
 
-// GetImagesFromDockefile returns all images found in given Dockerfile.
-// It search for occurences of "FROM imageName" or "FROM imageName AS alias"
+// GetImagesFromDockerfile returns all images found in given Dockerfile.
+// It search for occurrences of "FROM imageName" or "FROM imageName AS alias"
 // Search is performed case insensitive.
-// Declaration of scrath is ignored.
-func GetImagesFromDockefile(dockerfilePath string) ([]string, error) {
+// Declaration of scratch is ignored.
+func GetImagesFromDockerfile(dockerfilePath string) ([]string, error) {
 	lines, err := readFileLines(dockerfilePath)
 	if err != nil {
 		return nil, err

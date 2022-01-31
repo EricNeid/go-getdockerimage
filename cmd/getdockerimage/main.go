@@ -79,7 +79,7 @@ func handleImage(image string) {
 
 func handleDockerFile(dockerFile string) {
 	fmt.Printf("Handling dockerfile %s\n", dockerFile)
-	images, err := getdockerimage.GetImagesFromDockefile(dockerFile)
+	images, err := getdockerimage.GetImagesFromDockerfile(dockerFile)
 	if err != nil {
 		fmt.Printf("Error while handling dockerfile %s %s\n", dockerFile, err.Error())
 		os.Exit(1)
