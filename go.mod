@@ -2,4 +2,4 @@
 // SPDX-License-Identifier: MIT
 module github.com/EricNeid/go-getdockerimage
 
-go 1.13
+go 1.18
