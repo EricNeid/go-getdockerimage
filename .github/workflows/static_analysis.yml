@@ -27,6 +27,7 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+        go get golang.org/x/lint/golint
         go install golang.org/x/lint/golint
 
     - name: Golint
