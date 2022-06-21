@@ -27,6 +27,7 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+        go install golang.org/x/lint/golint
 
     - name: Golint
       run: golint -set_exit_status $(go list -tags ci ./...)
