@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-// getOutputName returns name of generated file from image name
+// GetOutputName returns name of generated file from image name
 // foo -> foo.docker.img
 // foo/bar -> foo_bar.docker.img
 // foo/bar:42 -> foo_bar_42.docker.img
