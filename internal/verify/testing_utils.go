@@ -31,7 +31,7 @@ func Ok(t *testing.T, err error) {
 }
 
 // Equals fails the test if exp is not equal to act.
-func Equals[T interface{}](t *testing.T, exp, act T) {
+func Equals(t *testing.T, exp, act any) {
 	if !reflect.DeepEqual(exp, act) {
 		_, file, line, _ := runtime.Caller(1)
 		fmt.Printf("%s:%d:\n\n\texp: %#v\n\n\tgot: %#v\n\n", filepath.Base(file), line, exp, act)
@@ -43,7 +43,7 @@ func Equals[T interface{}](t *testing.T, exp, act T) {
 func NotNil(t *testing.T, act interface{}, msg string) {
 	if act == nil {
 		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("%s:%d: "+msg+"\n\n", append([]interface{}{filepath.Base(file), line}))
+		fmt.Printf("%s:%d: "+msg+"\n\n", filepath.Base(file), line)
 		t.FailNow()
 	}
 }
