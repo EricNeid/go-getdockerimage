@@ -7,7 +7,7 @@ on: [push, pull_request]
 jobs:
 
   build:
-    name: Build
+    name: Static Analysis
     runs-on: ubuntu-latest
     steps:
 
@@ -23,10 +23,8 @@ jobs:
     - name: Get dependencies
       run: |
         go mod download
-        go install golang.org/x/tools/cmd/goimports@latest
-        go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+        go install honnef.co/go/tools/cmd/staticcheck@latest
         go install golang.org/x/lint/golint@latest
-        go install honnef.co/go/tools/cmd/staticcheck@v0.2.1
 
-    - name: Golint
-      run: golint -set_exit_status $(go list -tags ci ./...)
+    - name: staticcheck
+      run: staticcheck ./...
