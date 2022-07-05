@@ -18,6 +18,8 @@ const version = "0.4.1"
 const dockerfile = "DOCKERFILE"
 const composeFile = "DOCKER-COMPOSE.YML"
 
+var destination = ""
+
 func init() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
@@ -27,16 +29,19 @@ func init() {
 		fmt.Printf("  Usage  : %s <image-name|dockerfile|docker-compose.yml|docker-project-folder>\n", os.Args[0])
 		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
 	}
+
+	flag.StringVar(&destination, "dst", destination, "(Optional) destination directory")
+
 	flag.Parse()
 
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		flag.Usage()
 		os.Exit(1)
 	}
 }
 
 func main() {
-	input := os.Args[1]
+	input := flag.Args()[0]
 	f, err := os.Stat(input)
 
 	// image name given
@@ -70,7 +75,11 @@ func handleImage(image string) {
 		os.Exit(1)
 	}
 
-	err = getdockerimage.SaveImage(image, output)
+	// TODO
+	// if destination is remote server then save image to tmp directory
+	// move to destination server
+	// delete tmp directory
+	err = getdockerimage.SaveImage(image, destination, output)
 	if err != nil {
 		fmt.Println("Error while saving docker image " + err.Error())
 		os.Exit(1)
