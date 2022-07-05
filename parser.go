@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Eric Neidhardt
 // SPDX-License-Identifier: MIT
 
-// Package gogetdockerimage contains functions to download and save docker images.
 package gogetdockerimage
 
 import (
@@ -58,7 +57,7 @@ func GetImagesFromDockerfile(dockerfilePath string) ([]string, error) {
 }
 
 // GetImagesFromDockerCompose returns all images found in given docker-compose file.
-// It search for occurences of "image: <imageName>" or "image: "<imageName>""
+// It search for occurrences of "image: <imageName>" or "image: "<imageName>""
 // Search is performed case insensitive.
 func GetImagesFromDockerCompose(dockerfilePath string) ([]string, error) {
 	lines, err := readFileLines(dockerfilePath)
