@@ -10,9 +10,26 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+// RemoteDestination represents a destination on a remote host.
+// It contains user name, remote address (containing port number)
+// and folder on remote host.
+type RemoteDestination struct {
+	User    string
+	Addr    string
+	DstPath string
+}
+
+// ParseDestination checks if the given destination is an url
+// to a remote host (ie. user@10.20.300.400:22:/home/user/dir).
+// If that is the case it returns new RemoteDestination from url
+// components.
+func ParseDestination(dst string) (*RemoteDestination, error) {
+	return nil, nil
+}
+
 // SSHCopyFile copies a file from srcPath to dstPath on the provided host.
 // Host url can include port (ie. "10.20.300.400:22")
-func SSHCopyFile(user, pass, host, srcPath, dstPath string) error {
+func SSHCopyFile(user, pass, addr, srcPath, dstPath string) error {
 	config := &ssh.ClientConfig{
 		User: user,
 		Auth: []ssh.AuthMethod{
@@ -21,7 +38,7 @@ func SSHCopyFile(user, pass, host, srcPath, dstPath string) error {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
-	client, err := ssh.Dial("tcp", host, config)
+	client, err := ssh.Dial("tcp", addr, config)
 	if err != nil {
 		return err
 	}

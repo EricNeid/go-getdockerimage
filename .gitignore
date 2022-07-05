@@ -5,4 +5,4 @@ getdockerimage
 !getdockerimage/
 **/*.docker.img
 tmp/
-ssh_test.go
+testlocal
