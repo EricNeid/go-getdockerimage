@@ -44,14 +44,17 @@ func main() {
 	input := flag.Args()[0]
 	f, err := os.Stat(input)
 
-	// image name given
 	if errors.Is(err, os.ErrNotExist) {
+		// image name given
 		handleImage(input)
 	} else if f.IsDir() {
+		// directory given
 		handleDir(input)
 	} else if strings.ToUpper(filepath.Base(input)) == dockerfile {
+		// dockerfile given
 		handleDockerFile(input)
 	} else if strings.ToUpper(filepath.Base(input)) == composeFile {
+		// docker-compose file given
 		handleDockerComposeFile(input)
 	} else {
 		fmt.Println("Argument not understood, expecting image|dockerfile|docker-compose.yml|directory")
