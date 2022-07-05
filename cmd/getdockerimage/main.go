@@ -30,7 +30,7 @@ func init() {
 		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
 	}
 
-	flag.StringVar(&destination, "dst", destination, "(Optional) destination directory")
+	flag.StringVar(&destination, "dst", destination, "(Optional) destination directory or ssh url (ssh://user@10.20.300.400:22/home/user/dir)")
 
 	flag.Parse()
 

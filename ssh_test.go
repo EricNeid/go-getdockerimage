@@ -8,7 +8,7 @@ import (
 
 func TestParseDestination(t *testing.T) {
 	// action
-	_, err := ParseDestination("user@10.20.300.400:22:/home/user/dir")
+	_, err := ParseDestination("ssh://user@10.20.300.400:22/home/user/dir")
 	// verify
 	verify.Ok(t, err)
 }

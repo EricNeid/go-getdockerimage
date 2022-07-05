@@ -6,6 +6,8 @@ package gogetdockerimage
 import (
 	"os"
 
+	"net/url"
+
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
@@ -20,10 +22,14 @@ type RemoteDestination struct {
 }
 
 // ParseDestination checks if the given destination is an url
-// to a remote host (ie. user@10.20.300.400:22:/home/user/dir).
+// to a remote host (ie. ssh://user@10.20.300.400:22/home/user/dir).
 // If that is the case it returns new RemoteDestination from url
 // components.
 func ParseDestination(dst string) (*RemoteDestination, error) {
+	_, err := url.Parse(dst)
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
 
