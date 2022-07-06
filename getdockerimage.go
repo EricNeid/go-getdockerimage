@@ -66,9 +66,8 @@ func DownloadImage(imageName string) error {
 	var outBuff, errBuff bytes.Buffer
 	cmd.Stdout = &outBuff
 	cmd.Stderr = &errBuff
-
-	go printBuffer(&outBuff)
-	go printBuffer(&errBuff)
+	defer close(printBuffer(&outBuff))
+	defer close(printBuffer(&errBuff))
 
 	return cmd.Run()
 }
@@ -81,9 +80,8 @@ func SaveImage(imageName, outDir, outName string) error {
 	var outBuff, errBuff bytes.Buffer
 	cmd.Stdout = &outBuff
 	cmd.Stderr = &errBuff
-
-	go printBuffer(&outBuff)
-	go printBuffer(&errBuff)
+	defer close(printBuffer(&outBuff))
+	defer close(printBuffer(&errBuff))
 
 	err := cmd.Run()
 	if err != nil {
@@ -107,11 +105,21 @@ func RemoveDir(dir string) error {
 	return os.RemoveAll(dir)
 }
 
-func printBuffer(buffer *bytes.Buffer) {
-	for {
-		if buffer.Len() > 0 {
-			next := buffer.Next(256)
-			fmt.Print(string(next))
+// printBuffer starts printing content of this buffer, until it is closed.
+func printBuffer(buffer *bytes.Buffer) chan<- struct{} {
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-quit:
+				return
+			default:
+				if buffer.Len() > 0 {
+					next := buffer.Next(256)
+					fmt.Print(string(next))
+				}
+			}
 		}
-	}
+	}()
+	return quit
 }
