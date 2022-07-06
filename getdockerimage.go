@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -73,9 +74,9 @@ func DownloadImage(imageName string) error {
 }
 
 // SaveImage write docker image to file system.
-func SaveImage(image string, output string) error {
-	fmt.Printf("docker save %s --output %s\n", image, output)
-	cmd := exec.Command("docker", "save", image, "--output", output)
+func SaveImage(imageName, outDir, outName string) error {
+	fmt.Printf("docker save %s --output %s\n", imageName, outName)
+	cmd := exec.Command("docker", "save", imageName, "--output", outName)
 
 	var outBuff, errBuff bytes.Buffer
 	cmd.Stdout = &outBuff
@@ -84,13 +85,32 @@ func SaveImage(image string, output string) error {
 	go printBuffer(&outBuff)
 	go printBuffer(&errBuff)
 
-	return cmd.Run()
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	if outDir != "" {
+		fmt.Printf("Moving %s to dir %s\n", outName, outDir)
+		err = os.MkdirAll(outDir, os.ModePerm)
+		if err != nil {
+			return err
+		}
+		return os.Rename(outName, outDir+"/"+outName)
+	}
+
+	return nil
+}
+
+// RemoveDir deletes directory and all files in it.
+func RemoveDir(dir string) error {
+	return os.RemoveAll(dir)
 }
 
 func printBuffer(buffer *bytes.Buffer) {
 	for {
 		if buffer.Len() > 0 {
-			next := buffer.Next(buffer.Len())
+			next := buffer.Next(256)
 			fmt.Print(string(next))
 		}
 	}

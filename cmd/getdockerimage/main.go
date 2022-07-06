@@ -18,6 +18,9 @@ const version = "0.4.1"
 const dockerfile = "DOCKERFILE"
 const composeFile = "DOCKER-COMPOSE.YML"
 
+var outDir = ""
+var ssh = ""
+
 func init() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
@@ -27,26 +30,33 @@ func init() {
 		fmt.Printf("  Usage  : %s <image-name|dockerfile|docker-compose.yml|docker-project-folder>\n", os.Args[0])
 		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
 	}
+
+	flag.StringVar(&outDir, "dir", outDir, "(Optional) output directory")
+	flag.StringVar(&ssh, "ssh", ssh, "(Optional) transfer images to remote server (ssh://user@10.20.300.400:22)")
+
 	flag.Parse()
 
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		flag.Usage()
 		os.Exit(1)
 	}
 }
 
 func main() {
-	input := os.Args[1]
+	input := flag.Args()[0]
 	f, err := os.Stat(input)
 
-	// image name given
 	if errors.Is(err, os.ErrNotExist) {
+		// image name given
 		handleImage(input)
 	} else if f.IsDir() {
+		// directory given
 		handleDir(input)
 	} else if strings.ToUpper(filepath.Base(input)) == dockerfile {
+		// dockerfile given
 		handleDockerFile(input)
 	} else if strings.ToUpper(filepath.Base(input)) == composeFile {
+		// docker-compose file given
 		handleDockerComposeFile(input)
 	} else {
 		fmt.Println("Argument not understood, expecting image|dockerfile|docker-compose.yml|directory")
@@ -70,10 +80,45 @@ func handleImage(image string) {
 		os.Exit(1)
 	}
 
-	err = getdockerimage.SaveImage(image, output)
-	if err != nil {
-		fmt.Println("Error while saving docker image " + err.Error())
-		os.Exit(1)
+	if ssh != "" {
+		fmt.Println("Downloading image to temporary directory")
+		err = getdockerimage.SaveImage(image, "tmp", output)
+		if err != nil {
+			fmt.Println("Error while saving docker image " + err.Error())
+			os.Exit(1)
+		}
+
+		res, err := getdockerimage.ParseDestination(ssh)
+		if err != nil {
+			fmt.Println("Could not parse ssh url " + err.Error())
+			os.Exit(1)
+		}
+
+		fmt.Println("Copy image to server")
+		err = getdockerimage.SSHCopyFile(
+			res.User,
+			res.Pass,
+			res.Addr,
+			filepath.Join("tmp", output),
+			output,
+		)
+		if err != nil {
+			fmt.Println("Error while copying image to server " + err.Error())
+			os.Exit(1)
+		}
+
+		fmt.Println("Cleanup")
+		err = getdockerimage.RemoveDir("tmp")
+		if err != nil {
+			fmt.Println("Error while deleting temporary directory " + err.Error())
+			os.Exit(1)
+		}
+	} else {
+		err = getdockerimage.SaveImage(image, outDir, output)
+		if err != nil {
+			fmt.Println("Error while saving docker image " + err.Error())
+			os.Exit(1)
+		}
 	}
 }
 

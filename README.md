@@ -46,7 +46,7 @@ by using go install.
 Download tool:
 
 ```bash
-go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@v0.4.1
+go install github.com/EricNeid/go-getdockerimage/cmd/getdockerimage@latest
 ```
 
 ## Usage
@@ -71,6 +71,20 @@ Download all required images for project, by checking dockerfile and docker-comp
 getdockerimage.exe ./my-docker-project
 => foo_image_2.0.0.img
 => bar_image_2.0.0.img
+```
+
+Store images to folder:
+
+```bash
+getdockerimage.exe -dir=out foo/image:2.0.0
+=> out/foo_image_2.0.0.img
+```
+
+Transfer images to server via ssh:
+
+```bash
+getdockerimage.exe -ssh=ssh://user:pass@111.222.333.444 foo/image:2.0.0
+=> out/foo_image_2.0.0.img
 ```
 
 ## Question or comments

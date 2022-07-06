@@ -5,3 +5,4 @@ getdockerimage
 !getdockerimage/
 **/*.docker.img
 tmp/
+testlocal
