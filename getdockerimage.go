@@ -5,9 +5,9 @@
 package gogetdockerimage
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -63,11 +63,9 @@ func DownloadImage(imageName string) error {
 	fmt.Printf("docker pull %s\n", imageName)
 	cmd := exec.Command("docker", "pull", imageName)
 
-	var outBuff, errBuff bytes.Buffer
-	cmd.Stdout = &outBuff
-	cmd.Stderr = &errBuff
-	defer close(printBuffer(&outBuff))
-	defer close(printBuffer(&errBuff))
+	writer := io.MultiWriter(os.Stdout)
+	cmd.Stdout = writer
+	cmd.Stderr = writer
 
 	return cmd.Run()
 }
@@ -77,11 +75,9 @@ func SaveImage(imageName, outDir, outName string) error {
 	fmt.Printf("docker save %s --output %s\n", imageName, outName)
 	cmd := exec.Command("docker", "save", imageName, "--output", outName)
 
-	var outBuff, errBuff bytes.Buffer
-	cmd.Stdout = &outBuff
-	cmd.Stderr = &errBuff
-	defer close(printBuffer(&outBuff))
-	defer close(printBuffer(&errBuff))
+	writer := io.MultiWriter(os.Stdout)
+	cmd.Stdout = writer
+	cmd.Stderr = writer
 
 	err := cmd.Run()
 	if err != nil {
@@ -103,23 +99,4 @@ func SaveImage(imageName, outDir, outName string) error {
 // RemoveDir deletes directory and all files in it.
 func RemoveDir(dir string) error {
 	return os.RemoveAll(dir)
-}
-
-// printBuffer starts printing content of this buffer, until it is closed.
-func printBuffer(buffer *bytes.Buffer) chan<- struct{} {
-	quit := make(chan struct{})
-	go func() {
-		for {
-			select {
-			case <-quit:
-				return
-			default:
-				if buffer.Len() > 0 {
-					next := buffer.Next(256)
-					fmt.Print(string(next))
-				}
-			}
-		}
-	}()
-	return quit
 }
