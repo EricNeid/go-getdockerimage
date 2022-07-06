@@ -12,7 +12,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceRoot}/cmd/getdockerimage/",
-            "args": ["-dst=tmp", "hello-world"]
+            "args": ["-dir=tmp", "hello-world"]
         },{
             "name": "get from folder",
             "type": "go",

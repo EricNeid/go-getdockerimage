@@ -4,9 +4,8 @@
 package gogetdockerimage
 
 import (
-	"os"
-
 	"net/url"
+	"os"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -17,20 +16,25 @@ import (
 // and folder on remote host.
 type RemoteDestination struct {
 	User    string
+	Pass    string
 	Addr    string
 	DstPath string
 }
 
-// ParseDestination checks if the given destination is an url
-// to a remote host (ie. ssh://user@10.20.300.400:22/home/user/dir).
-// If that is the case it returns new RemoteDestination from url
-// components.
-func ParseDestination(dst string) (*RemoteDestination, error) {
-	_, err := url.Parse(dst)
+// ParseDestination parses the given url and returns new RemoteDestination.
+// Url is expected to be in the format: ssh://user@10.20.300.400:22/home/user/dir.
+func ParseDestination(urlString string) (*RemoteDestination, error) {
+	res, err := url.Parse(urlString)
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	pass, _ := res.User.Password()
+	return &RemoteDestination{
+		User:    res.User.Username(),
+		Pass:    pass,
+		Addr:    res.Host,
+		DstPath: res.Path,
+	}, nil
 }
 
 // SSHCopyFile copies a file from srcPath to dstPath on the provided host.

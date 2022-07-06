@@ -18,7 +18,8 @@ const version = "0.4.1"
 const dockerfile = "DOCKERFILE"
 const composeFile = "DOCKER-COMPOSE.YML"
 
-var destination = ""
+var outDir = ""
+var ssh = ""
 
 func init() {
 	flag.Usage = func() {
@@ -30,7 +31,8 @@ func init() {
 		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
 	}
 
-	flag.StringVar(&destination, "dst", destination, "(Optional) destination directory or ssh url (ssh://user@10.20.300.400:22/home/user/dir)")
+	flag.StringVar(&outDir, "dir", outDir, "(Optional) output directory")
+	flag.StringVar(&ssh, "ssh", ssh, "(Optional) transfer images to remote server (ssh://user@10.20.300.400:22/home/user/dir)")
 
 	flag.Parse()
 
@@ -78,14 +80,30 @@ func handleImage(image string) {
 		os.Exit(1)
 	}
 
-	// TODO
-	// if destination is remote server then save image to tmp directory
-	// move to destination server
-	// delete tmp directory
-	err = getdockerimage.SaveImage(image, destination, output)
-	if err != nil {
-		fmt.Println("Error while saving docker image " + err.Error())
-		os.Exit(1)
+	if ssh != "" {
+		fmt.Println("Downloading image to temporary directory")
+		err = getdockerimage.SaveImage(image, "tmp", output)
+		if err != nil {
+			fmt.Println("Error while saving docker image " + err.Error())
+			os.Exit(1)
+		}
+
+		// TODO
+		// if destination is remote server then save image to tmp directory
+		// move to destination server
+		// delete tmp directory
+
+		err = getdockerimage.RemoveDir("tmp")
+		if err != nil {
+			fmt.Println("Error while deleting temporary directory " + err.Error())
+			os.Exit(1)
+		}
+	} else {
+		err = getdockerimage.SaveImage(image, outDir, output)
+		if err != nil {
+			fmt.Println("Error while saving docker image " + err.Error())
+			os.Exit(1)
+		}
 	}
 }
 
