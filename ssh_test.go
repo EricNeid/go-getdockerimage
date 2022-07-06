@@ -14,7 +14,6 @@ func TestParseDestination(t *testing.T) {
 	verify.Equals(t, "user", res.User)
 	verify.Equals(t, "pass", res.Pass)
 	verify.Equals(t, "10.20.300.400:22", res.Addr)
-	verify.Equals(t, "/home/user/dir", res.DstPath)
 }
 
 func TestParseDestination_noPasswordSet(t *testing.T) {
@@ -25,5 +24,4 @@ func TestParseDestination_noPasswordSet(t *testing.T) {
 	verify.Equals(t, "user", res.User)
 	verify.Equals(t, "", res.Pass)
 	verify.Equals(t, "10.20.300.400:22", res.Addr)
-	verify.Equals(t, "/home/user/dir", res.DstPath)
 }

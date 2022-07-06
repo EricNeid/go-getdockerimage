@@ -15,14 +15,13 @@ import (
 // It contains user name, remote address (containing port number)
 // and folder on remote host.
 type RemoteDestination struct {
-	User    string
-	Pass    string
-	Addr    string
-	DstPath string
+	User string
+	Pass string
+	Addr string
 }
 
 // ParseDestination parses the given url and returns new RemoteDestination.
-// Url is expected to be in the format: ssh://user@10.20.300.400:22/home/user/dir.
+// Url is expected to be in the format: ssh://user@10.20.300.400:22.
 func ParseDestination(urlString string) (*RemoteDestination, error) {
 	res, err := url.Parse(urlString)
 	if err != nil {
@@ -30,10 +29,9 @@ func ParseDestination(urlString string) (*RemoteDestination, error) {
 	}
 	pass, _ := res.User.Password()
 	return &RemoteDestination{
-		User:    res.User.Username(),
-		Pass:    pass,
-		Addr:    res.Host,
-		DstPath: res.Path,
+		User: res.User.Username(),
+		Pass: pass,
+		Addr: res.Host,
 	}, nil
 }
 

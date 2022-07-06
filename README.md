@@ -73,6 +73,20 @@ getdockerimage.exe ./my-docker-project
 => bar_image_2.0.0.img
 ```
 
+Store images to folder:
+
+```bash
+getdockerimage.exe -dir=out foo/image:2.0.0
+=> out/foo_image_2.0.0.img
+```
+
+Transfer images to server via ssh:
+
+```bash
+getdockerimage.exe -ssh=ssh://user:pass@111.222.333.444 foo/image:2.0.0
+=> out/foo_image_2.0.0.img
+```
+
 ## Question or comments
 
 Please feel free to open a new issue:

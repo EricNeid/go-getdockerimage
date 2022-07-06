@@ -32,7 +32,7 @@ func init() {
 	}
 
 	flag.StringVar(&outDir, "dir", outDir, "(Optional) output directory")
-	flag.StringVar(&ssh, "ssh", ssh, "(Optional) transfer images to remote server (ssh://user@10.20.300.400:22/home/user/dir)")
+	flag.StringVar(&ssh, "ssh", ssh, "(Optional) transfer images to remote server (ssh://user@10.20.300.400:22)")
 
 	flag.Parse()
 
@@ -88,11 +88,26 @@ func handleImage(image string) {
 			os.Exit(1)
 		}
 
-		// TODO
-		// if destination is remote server then save image to tmp directory
-		// move to destination server
-		// delete tmp directory
+		res, err := getdockerimage.ParseDestination(ssh)
+		if err != nil {
+			fmt.Println("Could not parse ssh url " + err.Error())
+			os.Exit(1)
+		}
 
+		fmt.Println("Copy image to server")
+		err = getdockerimage.SSHCopyFile(
+			res.User,
+			res.Pass,
+			res.Addr,
+			filepath.Join("tmp", output),
+			output,
+		)
+		if err != nil {
+			fmt.Println("Error while copying image to server " + err.Error())
+			os.Exit(1)
+		}
+
+		fmt.Println("Cleanup")
 		err = getdockerimage.RemoveDir("tmp")
 		if err != nil {
 			fmt.Println("Error while deleting temporary directory " + err.Error())
