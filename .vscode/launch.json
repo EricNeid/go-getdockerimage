@@ -20,6 +20,14 @@
             "mode": "debug",
             "program": "${workspaceRoot}/cmd/getdockerimage/",
             "args": ["../../tmp"]
+        },
+        {
+            "name": "get myregistry.local:5000/testing/test-image",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceRoot}/cmd/getdockerimage/",
+            "args": ["-dir=tmp", "myregistry.local:5000/testing/test-image"]
         }
     ]
 }

@@ -33,6 +33,12 @@ func TestGetOutputName(t *testing.T) {
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, "foo_bar_2.0.0.docker.img", result)
+
+	// action
+	result, err = GetOutputName("/foo/bar:2.0.0")
+	// verify
+	verify.Ok(t, err)
+	verify.Equals(t, "foo_bar_2.0.0.docker.img", result)
 }
 
 func TestRemoveDir(t *testing.T) {
@@ -48,4 +54,12 @@ func TestRemoveDir(t *testing.T) {
 	verify.Ok(t, err)
 	_, err = os.Stat("testdata/tmp")
 	verify.Assert(t, os.IsNotExist(err), "directory not deleted")
+}
+
+func TestGetCustomRegistry(t *testing.T) {
+	// action
+	var result, err = GetCustomRegistry("myregistry.local:5000/foo/bar:2.0.0")
+	// verify
+	verify.Ok(t, err)
+	verify.Equals(t, "myregistry.local:5000", result)
 }

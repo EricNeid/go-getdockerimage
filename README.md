@@ -61,6 +61,13 @@ getdockerimage.exe foo/image:2.0.0
 => foo_image_2.0.0.img
 ```
 
+Download image from different registry:
+
+```bash
+getdockerimage.exe myregistry:1234/foo/image:2.0.0
+=> foo_image_2.0.0.img
+```
+
 Download image(s) from dockerfile or docker-compose.yml
 
 ```bash

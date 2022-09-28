@@ -13,6 +13,15 @@ import (
 	"strings"
 )
 
+// GetCustomRegistry return the name of custom registry, if present
+func GetCustomRegistry(image string) (string, error) {
+	parts := strings.Split(image, "/")
+	if len(parts) == 3 {
+		return parts[0], nil
+	}
+	return "", errors.New("No registry was found")
+}
+
 // GetOutputName returns name of generated file from image name
 // foo -> foo.docker.img
 // foo/bar -> foo_bar.docker.img
@@ -26,12 +35,18 @@ func GetOutputName(image string) (string, error) {
 
 	if strings.Contains(image, "/") {
 		parts := strings.Split(image, "/")
-		if len(parts) != 2 {
+		if len(parts) == 2 {
+			group = parts[0]
+			img = parts[1]
+			image = parts[1]
+		} else if len(parts) == 3 {
+			// parts[0] is custom registry
+			group = parts[1]
+			img = parts[2]
+			image = parts[2]
+		} else {
 			return "", errors.New("Unexpected image name format " + image)
 		}
-		group = parts[0]
-		img = parts[1]
-		image = parts[1]
 	}
 
 	if strings.Contains(image, ":") {

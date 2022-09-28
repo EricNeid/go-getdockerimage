@@ -49,6 +49,9 @@ func main() {
 	if errors.Is(err, os.ErrNotExist) {
 		// image name given
 		handleImage(input)
+	} else if err != nil {
+		// could be custom registry
+		handleImage(input)
 	} else if f.IsDir() {
 		// directory given
 		handleDir(input)
