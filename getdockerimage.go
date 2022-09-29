@@ -19,7 +19,7 @@ func GetCustomRegistry(image string) (string, error) {
 	if len(parts) == 3 {
 		return parts[0], nil
 	}
-	return "", errors.New("No registry was found")
+	return "", errors.New("no registry was found")
 }
 
 // GetOutputName returns name of generated file from image name
@@ -45,14 +45,14 @@ func GetOutputName(image string) (string, error) {
 			img = parts[2]
 			image = parts[2]
 		} else {
-			return "", errors.New("Unexpected image name format " + image)
+			return "", errors.New("unexpected image name format " + image)
 		}
 	}
 
 	if strings.Contains(image, ":") {
 		parts := strings.Split(image, ":")
 		if len(parts) != 2 {
-			return "", errors.New("Unexpected image name format " + image)
+			return "", errors.New("unexpected image name format " + image)
 		}
 		img = parts[0]
 		version = parts[1]
