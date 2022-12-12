@@ -5,6 +5,7 @@
 package verify
 
 import (
+	"encoding/json"
 	"fmt"
 	"path/filepath"
 	"reflect"
@@ -32,11 +33,24 @@ func Ok(t *testing.T, err error) {
 
 // Equals fails the test if exp is not equal to act.
 func Equals(t *testing.T, exp, act any) {
-	if !reflect.DeepEqual(exp, act) {
+	if !deepEqual(exp, act) {
 		_, file, line, _ := runtime.Caller(1)
 		fmt.Printf("%s:%d:\n\n\texp: %#v\n\n\tgot: %#v\n\n", filepath.Base(file), line, exp, act)
 		t.FailNow()
 	}
+}
+
+func deepEqual(v1, v2 interface{}) bool {
+	if reflect.DeepEqual(v1, v2) {
+		return true
+	}
+	var x1 interface{}
+	bytesA, _ := json.Marshal(v1)
+	_ = json.Unmarshal(bytesA, &x1)
+	var x2 interface{}
+	bytesB, _ := json.Marshal(v2)
+	_ = json.Unmarshal(bytesB, &x2)
+	return reflect.DeepEqual(x1, x2)
 }
 
 // NotNil fails if act is nil
