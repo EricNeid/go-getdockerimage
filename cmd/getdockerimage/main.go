@@ -14,9 +14,11 @@ import (
 	getdockerimage "github.com/EricNeid/go-getdockerimage"
 )
 
-const version = "0.5.0"
-const dockerfile = "DOCKERFILE"
-const composeFile = "DOCKER-COMPOSE.YML"
+const (
+	version     = "0.6.0"
+	dockerfile  = "DOCKERFILE"
+	composeFile = "DOCKER-COMPOSE.YML"
+)
 
 var (
 	outDir = ""
