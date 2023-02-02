@@ -18,8 +18,10 @@ const version = "0.5.0"
 const dockerfile = "DOCKERFILE"
 const composeFile = "DOCKER-COMPOSE.YML"
 
-var outDir = ""
-var ssh = ""
+var (
+	outDir = ""
+	ssh    = ""
+)
 
 func init() {
 	flag.Usage = func() {
@@ -30,10 +32,7 @@ func init() {
 		fmt.Printf("  Usage  : %s <image-name|dockerfile|docker-compose.yml|docker-project-folder>\n", os.Args[0])
 		fmt.Printf("  Example: %s foo/image:2.0.0\n", os.Args[0])
 	}
-
 	flag.StringVar(&outDir, "dir", outDir, "(Optional) output directory")
-	flag.StringVar(&ssh, "ssh", ssh, "(Optional) transfer images to remote server (ssh://user@10.20.300.400:22)")
-
 	flag.Parse()
 
 	if len(os.Args) < 2 {
@@ -74,55 +73,20 @@ func handleImage(image string) {
 
 	output, errOutputName := getdockerimage.GetOutputName(image)
 	if errOutputName != nil {
-		fmt.Println("Error while generating output name " + errOutputName.Error())
+		fmt.Println("Error while generating output name", errOutputName)
 		os.Exit(1)
 	}
 
 	errDownload := getdockerimage.DownloadImage(image)
 	if errDownload != nil {
-		fmt.Println("Error while downloading docker image " + errDownload.Error())
+		fmt.Println("Error while downloading docker image", errDownload)
 		os.Exit(1)
 	}
 
-	if ssh != "" {
-		fmt.Println("Downloading image to temporary directory")
-		errSaveImage := getdockerimage.SaveImage(image, "tmp", output)
-		if errSaveImage != nil {
-			fmt.Println("Error while saving docker image " + errSaveImage.Error())
-			os.Exit(1)
-		}
-
-		res, errParse := getdockerimage.ParseDestination(ssh)
-		if errParse != nil {
-			fmt.Println("Could not parse ssh url " + errParse.Error())
-			os.Exit(1)
-		}
-
-		fmt.Println("Copy image to server")
-		errSSH := getdockerimage.SSHCopyFile(
-			res.User,
-			res.Pass,
-			res.Addr,
-			filepath.Join("tmp", output),
-			output,
-		)
-		if errSSH != nil {
-			fmt.Println("Error while copying image to server " + errSSH.Error())
-			os.Exit(1)
-		}
-
-		fmt.Println("Cleanup")
-		errCleanup := getdockerimage.RemoveDir("tmp")
-		if errCleanup != nil {
-			fmt.Println("Error while deleting temporary directory " + errCleanup.Error())
-			os.Exit(1)
-		}
-	} else {
-		errSaveImage := getdockerimage.SaveImage(image, outDir, output)
-		if errSaveImage != nil {
-			fmt.Println("Error while saving docker image " + errSaveImage.Error())
-			os.Exit(1)
-		}
+	errSaveImage := getdockerimage.SaveImage(image, outDir, output)
+	if errSaveImage != nil {
+		fmt.Println("Error while saving docker image", errSaveImage)
+		os.Exit(1)
 	}
 }
 
@@ -130,7 +94,7 @@ func handleDockerFile(dockerFile string) {
 	fmt.Printf("Handling dockerfile %s\n", dockerFile)
 	images, err := getdockerimage.GetImagesFromDockerfile(dockerFile)
 	if err != nil {
-		fmt.Printf("Error while handling dockerfile %s %s\n", dockerFile, err.Error())
+		fmt.Printf("Error while handling dockerfile %s %s\n", dockerFile, err)
 		os.Exit(1)
 	}
 	for _, image := range images {
@@ -142,7 +106,7 @@ func handleDockerComposeFile(dockerComposeFile string) {
 	fmt.Printf("Handling compose file %s\n", dockerComposeFile)
 	images, err := getdockerimage.GetImagesFromDockerCompose(dockerComposeFile)
 	if err != nil {
-		fmt.Printf("Error while handling docker-compose file %s %s\n", dockerComposeFile, err.Error())
+		fmt.Printf("Error while handling docker-compose file %s %s\n", dockerComposeFile, err)
 		os.Exit(1)
 	}
 	for _, image := range images {
@@ -153,7 +117,7 @@ func handleDockerComposeFile(dockerComposeFile string) {
 func handleDir(dir string) {
 	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			fmt.Printf("Error while walking directory %s %s\n", path, err.Error())
+			fmt.Printf("Error while walking directory %s %s\n", path, err)
 			return nil
 		}
 		if !d.IsDir() {
@@ -167,7 +131,7 @@ func handleDir(dir string) {
 		return nil
 	})
 	if err != nil {
-		fmt.Printf("Error while handling directory %s %s\n", dir, err.Error())
+		fmt.Printf("Error while handling directory %s %s\n", dir, err)
 		os.Exit(1)
 	}
 }

@@ -8,6 +8,8 @@ SPDX-License-Identifier: CC-BY-4.0
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### Removed
+* Transfer files to server with -ssh (draft feature)
 
 ## 0.5.0 - 2022-07-06
 ### Added
