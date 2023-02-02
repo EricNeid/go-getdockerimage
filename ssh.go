@@ -4,6 +4,8 @@
 package gogetdockerimage
 
 import (
+	"fmt"
+	"net"
 	"net/url"
 	"os"
 
@@ -43,7 +45,10 @@ func SSHCopyFile(user, pass, addr, srcPath, dstPath string) error {
 		Auth: []ssh.AuthMethod{
 			ssh.Password(pass),
 		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+			fmt.Println()
+			return nil
+		}, //ssh.InsecureIgnoreHostKey(),
 	}
 
 	client, err := ssh.Dial("tcp", addr, config)
@@ -53,11 +58,11 @@ func SSHCopyFile(user, pass, addr, srcPath, dstPath string) error {
 	defer client.Close()
 
 	// open an SFTP session over an existing ssh connection.
-	sftp, err := sftp.NewClient(client)
+	sftpClient, err := sftp.NewClient(client)
 	if err != nil {
 		return err
 	}
-	defer sftp.Close()
+	defer sftpClient.Close()
 
 	// Open the source file
 	srcFile, err := os.Open(srcPath)
@@ -67,7 +72,7 @@ func SSHCopyFile(user, pass, addr, srcPath, dstPath string) error {
 	defer srcFile.Close()
 
 	// Create the destination file
-	dstFile, err := sftp.Create(dstPath)
+	dstFile, err := sftpClient.Create(dstPath)
 	if err != nil {
 		return err
 	}

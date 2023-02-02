@@ -46,22 +46,23 @@ func main() {
 	input := flag.Args()[0]
 	f, err := os.Stat(input)
 
-	if errors.Is(err, os.ErrNotExist) {
+	switch {
+	case errors.Is(err, os.ErrNotExist):
 		// image name given
 		handleImage(input)
-	} else if err != nil {
+	case err != nil:
 		// could be custom registry
 		handleImage(input)
-	} else if f.IsDir() {
+	case f.IsDir():
 		// directory given
 		handleDir(input)
-	} else if strings.ToUpper(filepath.Base(input)) == dockerfile {
+	case strings.ToUpper(filepath.Base(input)) == dockerfile:
 		// dockerfile given
 		handleDockerFile(input)
-	} else if strings.ToUpper(filepath.Base(input)) == composeFile {
+	case strings.ToUpper(filepath.Base(input)) == composeFile:
 		// docker-compose file given
 		handleDockerComposeFile(input)
-	} else {
+	default:
 		fmt.Println("Argument not understood, expecting image|dockerfile|docker-compose.yml|directory")
 		fmt.Printf("Arguments was %s\n", input)
 		os.Exit(1)
@@ -71,55 +72,55 @@ func main() {
 func handleImage(image string) {
 	fmt.Printf("Handling image %s\n", image)
 
-	output, err := getdockerimage.GetOutputName(image)
-	if err != nil {
-		fmt.Println("Error while generating output name " + err.Error())
+	output, errOutputName := getdockerimage.GetOutputName(image)
+	if errOutputName != nil {
+		fmt.Println("Error while generating output name " + errOutputName.Error())
 		os.Exit(1)
 	}
 
-	err = getdockerimage.DownloadImage(image)
-	if err != nil {
-		fmt.Println("Error while downloading docker image " + err.Error())
+	errDownload := getdockerimage.DownloadImage(image)
+	if errDownload != nil {
+		fmt.Println("Error while downloading docker image " + errDownload.Error())
 		os.Exit(1)
 	}
 
 	if ssh != "" {
 		fmt.Println("Downloading image to temporary directory")
-		err = getdockerimage.SaveImage(image, "tmp", output)
-		if err != nil {
-			fmt.Println("Error while saving docker image " + err.Error())
+		errSaveImage := getdockerimage.SaveImage(image, "tmp", output)
+		if errSaveImage != nil {
+			fmt.Println("Error while saving docker image " + errSaveImage.Error())
 			os.Exit(1)
 		}
 
-		res, err := getdockerimage.ParseDestination(ssh)
-		if err != nil {
-			fmt.Println("Could not parse ssh url " + err.Error())
+		res, errParse := getdockerimage.ParseDestination(ssh)
+		if errParse != nil {
+			fmt.Println("Could not parse ssh url " + errParse.Error())
 			os.Exit(1)
 		}
 
 		fmt.Println("Copy image to server")
-		err = getdockerimage.SSHCopyFile(
+		errSSH := getdockerimage.SSHCopyFile(
 			res.User,
 			res.Pass,
 			res.Addr,
 			filepath.Join("tmp", output),
 			output,
 		)
-		if err != nil {
-			fmt.Println("Error while copying image to server " + err.Error())
+		if errSSH != nil {
+			fmt.Println("Error while copying image to server " + errSSH.Error())
 			os.Exit(1)
 		}
 
 		fmt.Println("Cleanup")
-		err = getdockerimage.RemoveDir("tmp")
-		if err != nil {
-			fmt.Println("Error while deleting temporary directory " + err.Error())
+		errCleanup := getdockerimage.RemoveDir("tmp")
+		if errCleanup != nil {
+			fmt.Println("Error while deleting temporary directory " + errCleanup.Error())
 			os.Exit(1)
 		}
 	} else {
-		err = getdockerimage.SaveImage(image, outDir, output)
-		if err != nil {
-			fmt.Println("Error while saving docker image " + err.Error())
+		errSaveImage := getdockerimage.SaveImage(image, outDir, output)
+		if errSaveImage != nil {
+			fmt.Println("Error while saving docker image " + errSaveImage.Error())
 			os.Exit(1)
 		}
 	}

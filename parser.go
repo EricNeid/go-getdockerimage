@@ -39,7 +39,7 @@ func GetImagesFromDockerfile(dockerfilePath string) ([]string, error) {
 		imageName := ""
 		for _, r := range imageString {
 			// reached end of imageName => stop search
-			if unicode.IsSpace(r) && len(imageName) != 0 {
+			if unicode.IsSpace(r) && imageName != "" {
 				break
 			}
 			// looking for start of imageName
@@ -66,7 +66,6 @@ func GetImagesFromDockerCompose(dockerfilePath string) ([]string, error) {
 	}
 
 	var images []string
-
 	for _, l := range lines {
 		// search for possible image
 		// expected format is image: imageName
@@ -79,7 +78,7 @@ func GetImagesFromDockerCompose(dockerfilePath string) ([]string, error) {
 		imageName := ""
 		for _, r := range imageString {
 			// reached end of imageName => stop search
-			if (unicode.IsSpace(r) || r == '"') && len(imageName) != 0 {
+			if (unicode.IsSpace(r) || r == '"') && imageName != "" {
 				break
 			}
 			// looking for start of imageName

@@ -39,8 +39,8 @@ lint:
 	docker run -it --rm \
 		-e CGO_ENABLED=0 \
 		-w /app -v ${DIR}:/app \
-		golang:1.19.3-alpine \
-		go install golang.org/x/lint/golint@latest && staticcheck ./...
+		golangci/golangci-lint:v1.50.1 \
+		golangci-lint run ./...
 
 
 .PHONY: clean

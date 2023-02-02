@@ -7,8 +7,9 @@ SPDX-License-Identifier: CC-BY-4.0
 
 All notable changes to this project will be documented in this file.
 
-## 0.5.0 - 2022-07-06
 ## Unreleased
+
+## 0.5.0 - 2022-07-06
 ### Added
 * Configure output directory with -dir
 * Transfer files to server with -ssh (draft feature)

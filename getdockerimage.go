@@ -35,24 +35,25 @@ func GetOutputName(image string) (string, error) {
 
 	if strings.Contains(image, "/") {
 		parts := strings.Split(image, "/")
-		if len(parts) == 2 {
+		switch len(parts) {
+		case 2:
 			group = parts[0]
 			img = parts[1]
 			image = parts[1]
-		} else if len(parts) == 3 {
+		case 3:
 			// parts[0] is custom registry
 			group = parts[1]
 			img = parts[2]
 			image = parts[2]
-		} else {
-			return "", errors.New("unexpected image name format " + image)
+		default:
+			return "", fmt.Errorf("unexpected image name format: %s ", image)
 		}
 	}
 
 	if strings.Contains(image, ":") {
 		parts := strings.Split(image, ":")
 		if len(parts) != 2 {
-			return "", errors.New("unexpected image name format " + image)
+			return "", fmt.Errorf("unexpected image name format: %s ", image)
 		}
 		img = parts[0]
 		version = parts[1]
@@ -68,7 +69,7 @@ func GetOutputName(image string) (string, error) {
 		output = output + "_" + version
 	}
 
-	output = output + ".docker.img"
+	output += ".docker.img"
 
 	return output, nil
 }
