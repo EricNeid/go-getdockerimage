@@ -16,7 +16,7 @@ SPDX-License-Identifier: CC-BY-4.0
 Go-getdockerimage is a utility tool to download images from docker hub and export them.
 Exporting images is useful, if you have a server without access to docker hub.
 
-No magick involved. This tool is just a convenient wrapper for regular docker cli.
+No magic involved. This tool is just a convenient wrapper for regular docker cli.
 
 ## Use case
 
