@@ -37,7 +37,7 @@ lint:
 	docker run -it --rm \
 		-e CGO_ENABLED=0 \
 		-w /app -v ${DIR}:/app \
-		golangci/golangci-lint:v1.50.1 \
+		golangci/golangci-lint:v1.52.2 \
 		golangci-lint run ./...
 
 
