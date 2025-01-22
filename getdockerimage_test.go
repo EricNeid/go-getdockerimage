@@ -3,7 +3,6 @@
 package gogetdockerimage
 
 import (
-	"os"
 	"testing"
 
 	"github.com/EricNeid/go-getdockerimage/internal/verify"
@@ -41,25 +40,17 @@ func TestGetOutputName(t *testing.T) {
 	verify.Equals(t, "foo_bar_2.0.0.docker.img", result)
 }
 
-func TestRemoveDir(t *testing.T) {
-	// arrange
-	err := os.MkdirAll("testdata/tmp", os.ModePerm)
-	verify.Ok(t, err)
-	f, err := os.CreateTemp("testdata/tmp", "tmp.txt")
-	verify.Ok(t, err)
-	f.Close()
-	// action
-	err = RemoveDir("testdata/tmp")
-	// verify
-	verify.Ok(t, err)
-	_, err = os.Stat("testdata/tmp")
-	verify.Assert(t, os.IsNotExist(err), "directory not deleted")
-}
-
 func TestGetCustomRegistry(t *testing.T) {
 	// action
 	var result, err = GetCustomRegistry("myregistry.local:5000/foo/bar:2.0.0")
 	// verify
 	verify.Ok(t, err)
 	verify.Equals(t, "myregistry.local:5000", result)
+}
+
+func TestGetDockerExecutable(t *testing.T) {
+	// action
+	result, err := GetDockerExecutable()
+	// verify
+	verify.Assert(t, result == DOCKER || result == PODMAN || err != nil, "result must be either DOCKER or PODMAN, or an error must be returned")
 }
