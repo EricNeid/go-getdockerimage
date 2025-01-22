@@ -13,10 +13,10 @@ import (
 	"strings"
 )
 
-type DOCKER_EXECUTABLE string
+type DockerExecutable string
 
-const PODMAN DOCKER_EXECUTABLE = "podman"
-const DOCKER DOCKER_EXECUTABLE = "docker"
+const PODMAN DockerExecutable = "podman"
+const DOCKER DockerExecutable = "docker"
 
 // GetCustomRegistry return the name of custom registry, if present
 func GetCustomRegistry(image string) (string, error) {
@@ -80,7 +80,7 @@ func GetOutputName(image string) (string, error) {
 }
 
 // GetDockerExecutable return the name of the docker executable (podman or docker).
-func GetDockerExecutable() (DOCKER_EXECUTABLE, error) {
+func GetDockerExecutable() (DockerExecutable, error) {
 	_, err := exec.LookPath("podman")
 	if err == nil {
 		return PODMAN, nil
@@ -93,10 +93,19 @@ func GetDockerExecutable() (DOCKER_EXECUTABLE, error) {
 }
 
 // DownloadImage download docker image by name.
-func DownloadImage(imageName string) error {
-	fmt.Printf("docker pull %s\n", imageName)
-	cmd := exec.Command("docker", "pull", imageName)
+func DownloadImage(dockerExec DockerExecutable, imageName string) error {
+	fmt.Printf("%s pull %s\n", dockerExec, imageName)
 
+	// set command explicitly to prevent tainted input
+	var cmd *exec.Cmd
+	switch dockerExec {
+	case PODMAN:
+		cmd = exec.Command("podman", "pull", imageName)
+	case DOCKER:
+		cmd = exec.Command("docker", "pull", imageName)
+	default:
+		return errors.New("unsupported docker executable")
+	}
 	writer := io.MultiWriter(os.Stdout)
 	cmd.Stdout = writer
 	cmd.Stderr = writer
@@ -105,10 +114,19 @@ func DownloadImage(imageName string) error {
 }
 
 // SaveImage write docker image to file system.
-func SaveImage(imageName, outDir, outName string) error {
-	fmt.Printf("docker save %s --output %s\n", imageName, outName)
-	cmd := exec.Command("docker", "save", imageName, "--output", outName)
+func SaveImage(dockerExec DockerExecutable, imageName, outDir, outName string) error {
+	fmt.Printf("%s save %s --output %s\n", dockerExec, imageName, outName)
 
+	// set command explicitly to prevent tainted input
+	var cmd *exec.Cmd
+	switch dockerExec {
+	case PODMAN:
+		cmd = exec.Command("podman", "save", imageName, "--output", outName)
+	case DOCKER:
+		cmd = exec.Command("docker", "save", imageName, "--output", outName)
+	default:
+		return errors.New("unsupported docker executable")
+	}
 	writer := io.MultiWriter(os.Stdout)
 	cmd.Stdout = writer
 	cmd.Stderr = writer

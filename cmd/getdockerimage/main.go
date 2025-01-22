@@ -22,7 +22,6 @@ const (
 
 var (
 	outDir = ""
-	ssh    = ""
 )
 
 func init() {
@@ -73,19 +72,25 @@ func main() {
 func handleImage(image string) {
 	fmt.Printf("Handling image %s\n", image)
 
+	dockerExec, errDockerExec := getdockerimage.GetDockerExecutable()
+	if errDockerExec != nil {
+		fmt.Println("Could not find suitable executable", errDockerExec)
+		os.Exit(1)
+	}
+
 	output, errOutputName := getdockerimage.GetOutputName(image)
 	if errOutputName != nil {
 		fmt.Println("Error while generating output name", errOutputName)
 		os.Exit(1)
 	}
 
-	errDownload := getdockerimage.DownloadImage(image)
+	errDownload := getdockerimage.DownloadImage(dockerExec, image)
 	if errDownload != nil {
 		fmt.Println("Error while downloading docker image", errDownload)
 		os.Exit(1)
 	}
 
-	errSaveImage := getdockerimage.SaveImage(image, outDir, output)
+	errSaveImage := getdockerimage.SaveImage(dockerExec, image, outDir, output)
 	if errSaveImage != nil {
 		fmt.Println("Error while saving docker image", errSaveImage)
 		os.Exit(1)
