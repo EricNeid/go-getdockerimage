@@ -47,3 +47,10 @@ func TestGetCustomRegistry(t *testing.T) {
 	verify.Ok(t, err)
 	verify.Equals(t, "myregistry.local:5000", result)
 }
+
+func TestGetDockerExecutable(t *testing.T) {
+	// action
+	result, err := GetDockerExecutable()
+	// verify
+	verify.Assert(t, result == DOCKER || result == PODMAN || err != nil, "result must be either DOCKER or PODMAN, or an error must be returned")
+}

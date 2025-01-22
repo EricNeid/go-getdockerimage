@@ -13,6 +13,11 @@ import (
 	"strings"
 )
 
+type DOCKER_EXECUTABLE string
+
+const PODMAN DOCKER_EXECUTABLE = "podman"
+const DOCKER DOCKER_EXECUTABLE = "docker"
+
 // GetCustomRegistry return the name of custom registry, if present
 func GetCustomRegistry(image string) (string, error) {
 	parts := strings.Split(image, "/")
@@ -72,6 +77,19 @@ func GetOutputName(image string) (string, error) {
 	output += ".docker.img"
 
 	return output, nil
+}
+
+// GetDockerExecutable return the name of the docker executable (podman or docker).
+func GetDockerExecutable() (DOCKER_EXECUTABLE, error) {
+	_, err := exec.LookPath("podman")
+	if err == nil {
+		return PODMAN, nil
+	}
+	_, err = exec.LookPath("docker")
+	if err == nil {
+		return DOCKER, nil
+	}
+	return "", errors.New("neither docker nor podman executable found")
 }
 
 // DownloadImage download docker image by name.
