@@ -111,8 +111,3 @@ func SaveImage(imageName, outDir, outName string) error {
 
 	return nil
 }
-
-// RemoveDir deletes directory and all files in it.
-func RemoveDir(dir string) error {
-	return os.RemoveAll(dir)
-}
