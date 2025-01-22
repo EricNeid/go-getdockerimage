@@ -8,6 +8,8 @@ SPDX-License-Identifier: CC-BY-4.0
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+### Added
+* Handling for podman executable (instead of docker)
 
 ## 0.6.0 - 2023-02-02
 ### Removed
